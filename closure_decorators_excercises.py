@@ -2,7 +2,13 @@
 
 #Closure Excercise
 #Using a closure, create a function, multiples_of(n) which we can use to
-#create generators that generate multiples of n less than a given number.
+#create generator that generate multiples of n less than a given number.
+import math # for ceil
+
+def multiples_of(n):
+    def multiples_of_n(x):
+        yield from ((n * i) for i in range(1, math.ceil(x / n)))
+    return multiples_of_n
 
 m3 = multiples_of(3)
 m3_under30 = m3(30)
@@ -22,6 +28,11 @@ print(*m7_under30)
 #@make_upper – make every letter of a string returned from the decorated
 #function uppercase.
 
+def uppercase(func):
+    def wrapper():
+        return func().upper()
+    return wrapper
+
 def hello_world():
     return 'hello young, good day!!'
 
@@ -32,8 +43,16 @@ print(hello_world()) # output: HELLO YOUNG, GOOD DAY!!
 #@print_func_name – print the name of the decorated function before
 #executing the function.
 
+def decorator(func):
+    def inner():
+        print('my_func is running...')
+        func()
+    return inner
+
 def my_func():
     print('Python is fun!!')
+
+my_func = decorator(my_func)
 
 my_func() # output: my_func is running...
             #Python is fun
